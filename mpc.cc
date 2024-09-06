@@ -65,6 +65,23 @@ public:
         MatrixXd ref_traj(state_dim,N);
         return ref_traj;
     }
+    duble cost(const vector<Referencepath::Point>& reftrj,const vector<double>& control_cmd,const MatrixXd& currentstate){
+        double cost=0.0;
+        for(int i=0;i<N;i++){
+            Referencepath::Point=reftrj[i];
+            double current_x=currentstate(0,0);
+            VectorXd state_error<<current_x-Point.x,
+            ;
+            double state_cost=state_error.transpose()*matrix_q*state_error;
+            cost+=state_error;
+            Vector2d control_error<<control_cmd[2*i],control_cmd[2*i+1];
+            control_error=control_error.transpose()*matrix_r*control_error;
+            cost+=control_error;
+            
+            
+        }
+        return cost;
+    }
     bool solve(const Vehicle& Veh,const Referencepath& refpath,const vector<double>& control_cmd){
         MatrixXd currentstate=Veh.getstate();
         int index=refpath.getindex(currentstate);
